@@ -98,6 +98,8 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         unregisterReceiver(myReceiver)
         checkForPermissions()
+        val intent = Intent(this, WeatherService::class.java)
+        stopService(intent)
     }
 
     //Creating menu

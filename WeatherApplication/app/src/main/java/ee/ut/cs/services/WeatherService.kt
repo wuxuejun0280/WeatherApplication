@@ -14,6 +14,7 @@ import ee.ut.cs.bean.City
 import ee.ut.cs.broadcast.MainReceiver
 import ee.ut.cs.broadcast.ServiceReceiver
 import ee.ut.cs.weatherapplication.MainActivity
+import ee.ut.cs.weatherapplication.MenuActivity
 import ee.ut.cs.weatherapplication.R
 import ee.ut.cs.weatherapplication.SearchActivity
 import ee.ut.cs.weatherapplication.weatherapplication.WeatherItem
@@ -30,6 +31,7 @@ import java.time.ZonedDateTime
 
 
 class WeatherService : Service() {
+    val TAG = WeatherService::class.java.name
     lateinit var city:City
     lateinit var timezone:String
     val weatherItemList = ArrayList<WeatherItem>()
@@ -69,6 +71,7 @@ class WeatherService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(myReceiver)
+        Log.i(TAG, "Service is stopped. ")
     }
 
     override fun onBind(intent: Intent?): IBinder? {
