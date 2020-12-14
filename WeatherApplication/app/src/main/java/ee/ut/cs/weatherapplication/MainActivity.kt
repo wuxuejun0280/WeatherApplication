@@ -342,7 +342,17 @@ class MainActivity : AppCompatActivity() {
                     requestPermissions.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             }
-            else -> requestPermissions.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            else -> {
+                updateSetting()
+                val intent = Intent(this, WeatherService::class.java).apply {
+                    putExtra(SearchActivity.CITY_NAME, setting.cityName)
+                    putExtra(SearchActivity.CITY_LATITUDE, setting.latitude)
+                    putExtra(SearchActivity.CITY_LONGITUDE, setting.longitude)
+                }
+                startService(intent)
+                updateWidgets(this)
+
+            }
         }
     }
 
@@ -355,6 +365,21 @@ class MainActivity : AppCompatActivity() {
         val permissionsGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
         if (permissionsGranted) {
             getCurrentLocation()
+        } else {
+            if (setting.cityName==""){
+                setting.cityName = "Tartu, Estonia"
+                setting.latitude = "58.3854"
+                setting.longitude = "26.7247"
+                updateSetting()
+                db.getCityDao().insertCity(City(setting.cityName, setting.latitude, setting.longitude))
+            }
+
+            val intent = Intent(this, WeatherService::class.java).apply {
+                putExtra(SearchActivity.CITY_NAME, setting.cityName)
+                putExtra(SearchActivity.CITY_LATITUDE, setting.latitude)
+                putExtra(SearchActivity.CITY_LONGITUDE, setting.longitude)
+            }
+            startService(intent)
         }
     }
 

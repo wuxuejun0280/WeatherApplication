@@ -80,11 +80,8 @@ class WeatherWidget : AppWidgetProvider() {
     }
 
     private fun checkForPermissions(){
-        when{
-            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ->{
-                updateWeather()
-            }
-        }
+        updateWeather()
+
     }
 
 
